@@ -4,12 +4,23 @@ import pandas as pd
 import plotly.express as px
 
 # Load data from Google Drive
+import os
+import gdown
+
 @st.cache_data
 def load_data():
     url = "https://drive.google.com/uc?id=1ZVp4JQKiBl0rs_YyKH828ESdJe8_n8qC"
-    return pd.read_csv(url, parse_dates=["POS_DT"])
+    output = "HealthyJuice_Cleaned.csv"
 
-df = load_data()
+    if not os.path.exists(output):
+        gdown.download(url, output, quiet=False)
+
+    if os.path.exists(output):
+        return pd.read_csv(output, parse_dates=["POS_DT"])
+    else:
+        st.error("CSV file could not be downloaded. Please check the link or file permissions.")
+        return pd.DataFrame()
+
 
 # Sidebar filters for all dimensions
 st.sidebar.header("Filter Options")
