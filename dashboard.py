@@ -1,12 +1,10 @@
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
-# Load data from Google Drive
 import os
 import gdown
 
+# Load data from Google Drive
 @st.cache_data
 def load_data():
     url = "https://drive.google.com/uc?id=1ZVp4JQKiBl0rs_YyKH828ESdJe8_n8qC"
@@ -20,6 +18,14 @@ def load_data():
     else:
         st.error("CSV file could not be downloaded. Please check the link or file permissions.")
         return pd.DataFrame()
+
+# ✅ LOAD the data
+df = load_data()
+
+# ✅ HALT the app if data didn't load properly
+if df.empty:
+    st.stop()
+
 
 
 # Sidebar filters for all dimensions
